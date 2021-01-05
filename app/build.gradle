@@ -16,24 +16,29 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfig.release
+            storeFile file('keystore.release')
+            keyAlias System.getenv("MY_APP_KEY_ALIAS")
+            storePassword System.getenv("MY_APP_STORE_PASSWORD")
+            keyPassword System.getenv("MY_APP_KEY_PASSWORD")
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                signingConfig signingConfigs.release
+            }
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    release {
-        storeFile file('keystore.release')
-        keyAlias System.getenv("MY_APP_KEY_ALIAS")
-        storePassword System.getenv("MY_APP_STORE_PASSWORD")
-        keyPassword System.getenv("MY_APP_KEY_PASSWORD")
-    }
+
 }
 
 apply plugin: 'com.android.application'
